@@ -1,0 +1,21 @@
+void main() {
+	cityMap cm;
+	cm.setSize(200.015, 110);
+	int i = 1;
+	street a;
+	while (i < 6){
+		if (i != 3){
+			a.setX(i*20);
+			a.setY(i*20);
+			a.setWidth(10);
+			a.setLenght(40);
+			cm.add(a);
+		}
+	}
+	"ALA MA KOTA\"";
+}
+
+
+pameitac linie i columne w tokenie - poczatku tokenu
+
+zapamietywac numer pozycji w pliku - czyli ktory znak (to nie to samo co column * linia)

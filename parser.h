@@ -24,7 +24,7 @@ private:
     void getParamsDefinitions();
     void getCode();
     bool getParam();
-    bool getLine();
+    bool getInstruction();
     void getDefinition();
     void getRValue();
     void getValue();

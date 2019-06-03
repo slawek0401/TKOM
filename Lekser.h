@@ -14,7 +14,7 @@ class Lekser
         int getLine();
         int getColumn();
         const std::vector<std::string> buildInTypes {"void", "int", "double", "cityMap", "street", "string"};
-        const std::vector<std::string> keyWords {"while", "if", "else"};
+        const std::vector<std::string> keyWords {"while", "if", "else", "return"};
     private:
     Source source;
 

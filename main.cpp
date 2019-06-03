@@ -1,4 +1,6 @@
 #include <iostream>
+#include "int.h"
+#include "interpreter.h"
 #include "parser.h"
 
 using namespace std;
@@ -71,6 +73,9 @@ int main(){
     //Wypisywanie drzewa stworzonego przez parser
     Parser parser;
     printTree(parser.parse());
+    Interpreter inter;
+    CityMap map = inter.run();
+    std::cout<<map;
 
     return 0;
 }

@@ -2,6 +2,7 @@
 #define TREEELEMENT_H
 
 #include "Token.h"
+#include "variable.h"
 #include <vector>
 
 enum treeElementTypes {tokenType, rootType, functionType, codeType, paramType, definitionType, ValueType, functionCallType, expressionType, bracketExpressionType};
@@ -13,6 +14,7 @@ public:
     TreeElement* parent;
     std::vector<TreeElement*> children;
     treeElementTypes type;
+    std::vector<Variable*> variables;
 
 public:
     TreeElement(Token);

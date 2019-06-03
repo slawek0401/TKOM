@@ -1,22 +1,24 @@
-void main() {
+cityMap main() {
 	cityMap cm;
-	cm.setSize(200.015, 110);
+	cm.setSize(200, 110);
 	int i = 1;
-	street a;
 	while (i < 6){
-		if (i != 3){
-			a.setX(i*20+100+251 < e + 45);
-			a.setY(i*20);
-			a.setWidth(10);
-			a.setLenght(40);
-			cm.add(a);
-		}
+		cm.setSize(10*i,110);
+		i=i+1;
 	}
+	
+	street c = getstr();
+	cm.add(c);
+	return cm;
 }
 
-street funkcja1(int a, string b){
-	int alfa = 15;
-	alfa = 12;
-	beta = (123 + 5)*4+((156-15)*2 > (12+15)*152-45);
-	gamma = 1;
+street getstr(){
+	street a;
+	a.setX(20);
+a.setY(20);
+	a.setWidth(40);
+	a.setLength(100);
+	a.setRotation(100);
+	return a;
 }
+

@@ -128,11 +128,11 @@ void Parser::getCode(){
     TreeElement* pom = new TreeElement(codeType);
     current->setAsChild(pom);
     current = pom;
-    while(getLine());
+    while(getInstruction());
     current = current->parent;
 }
 
-bool Parser::getLine(){ // zwraca czy pobierac nastepna linie (falsz gdy poojawi sie nawias domykający '}' )
+bool Parser::getInstruction(){ // zwraca czy pobierac nastepna linie (falsz gdy poojawi sie nawias domykający '}' )
     if (token.str=="}"){
         token = lekser.getToken();
         return false;
@@ -152,13 +152,14 @@ bool Parser::getLine(){ // zwraca czy pobierac nastepna linie (falsz gdy poojawi
     return true;
 }
 
-void Parser::getKeyWord(){
+void Parser::getKeyWord(){ //getRValue()
     TreeElement* pom = new TreeElement(token);
     current->setAsChild(pom);
     current = pom;
-    bool isElse = token.str == "else";
+    //bool isElse = token.str == "else";
+    std::string tokenType = token.str;
     token = lekser.getToken();
-    if (!isElse){
+    if (tokenType == "while" || tokenType == "if"){
         if (token.str == "(")
             token = lekser.getToken();
         else
@@ -172,14 +173,14 @@ void Parser::getKeyWord(){
     }
     if (token.str == "{")
         token = lekser.getToken();
-    else
+    else if (tokenType == "return")
         if (token.type == endLine){
             token = lekser.getToken();
             current = current->parent;
             return;
         }
         else {
-            errorOccured("niepoprawny znak za wyrazeniem \"" + token.str + "\" spodziewany '{' lub ';'");
+            getRValue();
             current = current->parent;
             return;
         }

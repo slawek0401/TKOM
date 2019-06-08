@@ -1,0 +1,12 @@
+cityMap main() {
+	cityMap cm;
+	cm.setSize(200, 110);
+	int in = 50;
+	street a;
+	if (in == 50){
+		int in = 100;
+		a.setX(in);
+	}	
+	cm.add(a);
+	return cm;
+}

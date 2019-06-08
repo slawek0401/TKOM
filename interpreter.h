@@ -27,7 +27,7 @@ private:
     void handleIndentifier(TreeElement *currFunc, TreeElement *i);
     void handleCityMapBuildInMethod(TreeElement *currFunc, TreeElement *i, Variable*);
     void handleStreetBuildInMethod(TreeElement *currFunc, TreeElement *i, Variable*);
-    Variable* handleKeyWord(TreeElement *currFunc, TreeElement **i, bool* returnAppear);
+    Variable* handleKeyWord(TreeElement *currFunc, TreeElement **i, bool* returnAppear, size_t*);
     bool getBoolRValue(TreeElement *currFunc, TreeElement *i);
     Street getStreetRValue(TreeElement *currFunc, TreeElement *i);
     CityMap getCityMapRValue(TreeElement *currFunc, TreeElement *i);

@@ -1,0 +1,23 @@
+cityMap main() {
+	cityMap cm;
+	cm.setSize(200, 110);
+	street a = getstr(50);
+	cm.add(a);
+	return cm;
+}
+
+street getstr(int val){
+	street a;
+	a.setX(val);
+	a.setY(val);
+	int value = getValue();
+	a.setWidth(40);
+	a.setLength(value);
+	a.setRotation(value);
+	return a;
+}
+
+int getValue(){
+	int a = 100;
+	return a;
+}

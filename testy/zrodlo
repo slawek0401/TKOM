@@ -1,0 +1,10 @@
+cityMap main() {
+	cityMap cm;
+	cm.setSize(200, 110);
+	int i = 1;
+	while (i < 6){
+		cm.setSize(10*i,110);
+		i=i+1;
+	}
+	return cm;
+}

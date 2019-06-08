@@ -1,0 +1,17 @@
+cityMap main() {
+	cityMap cm;
+	cm.setSize(200, 110);
+	int i = 1;
+	street a;
+	while (i < 6){
+		if (i != 4){
+			a.setX(i*20);
+			a.setY(i*20);
+			a.setWidth(10);
+			a.setLength(40);
+			cm.add(a);	
+		}	
+		i=i+1;
+	}
+	return cm;
+}

@@ -1,8 +1,8 @@
 #include "Source.h"
-
+#include <iostream>
 Source::Source()
 {
-    file.open("C:\\Qt\\projects\\Inter\\zrodlo", std::fstream::in);
+    file.open("C:\\Qt\\projects\\Inter\\testy\\zrodlo8", std::fstream::in);
     file >> std::noskipws >> ch;
 }
 

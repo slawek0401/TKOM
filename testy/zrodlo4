@@ -1,0 +1,27 @@
+cityMap main() {
+	cityMap cm;
+	cm.setSize(200, 110);
+	int in = 5;
+	street a;
+	if (in == 6){
+		a = getstr(30);
+	}
+	else{
+		a = getstr(20);
+	}
+	street b = getstr(50);
+	cm.add(b);
+	cm.add(a);
+
+	return cm;
+}
+
+street getstr(int val){
+	street a;
+	a.setX(val);
+	a.setY(val);
+	a.setWidth(40);
+	a.setLength(100);
+	a.setRotation(100);
+	return a;
+}

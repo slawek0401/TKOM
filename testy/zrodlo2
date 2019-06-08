@@ -1,0 +1,19 @@
+cityMap main() {
+cityMap cm;
+cm.setSize(200,200);
+street a;
+a.setX(20);
+a.setY(20);
+a.setWidth(10);
+a.setLength(40);
+cm.add(a);
+
+street b;
+b.setX(100);
+b.setY(100);
+b.setWidth(10);
+b.setLength(40);
+b.rotate(30);
+cm.add(b);
+	return cm;
+}

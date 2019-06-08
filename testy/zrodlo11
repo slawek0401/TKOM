@@ -1,0 +1,6 @@
+cityMap main() {
+	cityMap cm;
+	double value = ((15+3)*5/2+(180/2)-(50-15))/3;
+	cm.setSize(200,value);
+	return cm;
+}

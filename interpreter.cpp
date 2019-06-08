@@ -28,11 +28,11 @@ CityMap Interpreter::run(){
         error("No main fuction found");
         return CityMap();
     }
+    TreeElement* mainFunc = root->children[main_index];
     if (((Function*)root->variables[main_index])->getReturnType() != "cityMap"){
         error("main function has to return cityMap type");
     }
 
-    TreeElement* mainFunc = root->children[main_index];
     CityMap* cm = (CityMap*)handleFunctionCode(mainFunc, std::vector<Variable*>());
     CityMap toRet = *cm;
     delete cm;
@@ -92,7 +92,9 @@ Variable* Interpreter::handleFunctionCode(TreeElement* currFunc, std::vector<Var
 
     bool returnAppear = false;
     Variable *toReturn;
-    for(auto i : currFunc->children[currFunc->children.size()-1]->children){
+    //for(auto i : currFunc->children[currFunc->children.size()-1]->children){
+    for(size_t ind=0; ind < currFunc->children[currFunc->children.size()-1]->children.size(); ++ind){
+        TreeElement* i = currFunc->children[currFunc->children.size()-1]->children[ind];
         if (returnAppear)
                 return toReturn;
         switch(i->type) {
@@ -108,7 +110,7 @@ Variable* Interpreter::handleFunctionCode(TreeElement* currFunc, std::vector<Var
                 handleIndentifier(currFunc, i);
                 break;
             case keyWord:
-                toReturn = handleKeyWord(currFunc, &i, &returnAppear);
+                toReturn = handleKeyWord(currFunc, &i, &returnAppear, &ind);
                 break;
             case assignment:
                 handleAssigment(currFunc, i);
@@ -123,7 +125,7 @@ Variable* Interpreter::handleFunctionCode(TreeElement* currFunc, std::vector<Var
     }
     return toReturn;
 }
-Variable* Interpreter::handleKeyWord(TreeElement* currFunc, TreeElement** i_reference, bool* returnAppear){
+Variable* Interpreter::handleKeyWord(TreeElement* currFunc, TreeElement** i_reference, bool* returnAppear, size_t* index){
     TreeElement* i = *i_reference;
     if (i->token.str == "while"){
         while(getBoolRValue(currFunc, i->children[0])){
@@ -134,12 +136,20 @@ Variable* Interpreter::handleKeyWord(TreeElement* currFunc, TreeElement** i_refe
     if (i->token.str == "if"){
         if (getBoolRValue(currFunc, i->children[0])){
             handleFunctionCode(i, std::vector<Variable*>());
+            if (i->parent->children.size() > getMyIndexInParentsChilden(i) + 1 &&
+                    i->parent->children[getMyIndexInParentsChilden(i) + 1]->token.str == "else"){
+                //zeby po powrocie do funkcji glownej nie patrzylo na elsa drugi raz
+                //i_reference = &(i->parent->children[getMyIndexInParentsChilden(i) + 1]);
+                (*index) = (*index) + 1;
+            }
         }
         else{
-            if (i->parent->children[getMyIndexInParentsChilden(i) + 1]->token.str == "else"){
-
+            if (i->parent->children.size() > getMyIndexInParentsChilden(i) + 1 &&
+                    i->parent->children[getMyIndexInParentsChilden(i) + 1]->token.str == "else"){
+                handleFunctionCode(i->parent->children[getMyIndexInParentsChilden(i) + 1], std::vector<Variable*>());
                 //zeby po powrocie do funkcji glownej nie patrzylo na elsa drugi raz
-                i_reference = &(i->parent->children[getMyIndexInParentsChilden(i) + 1]);
+                //i_reference = &(i->parent->children[getMyIndexInParentsChilden(i) + 1]);
+                (*index) = (*index) + 1;
             }
         }
         return nullptr;
@@ -256,40 +266,42 @@ Variable* Interpreter::handleFunCal(TreeElement* currFunc, TreeElement* i, std::
         return nullptr;
     }
     std::vector<Variable*> parameters;
-    for (size_t ind = 1; ind < i->children.size(); ++i){
+    for (size_t ind = 1; ind < i->children.size(); ++ind){
         bool defined = true;
         Variable* var;
+
         switch(variable_types[((Function*)root->variables[fun_id])->getParametersTypes()[ind-1]]){
         case 1:
             var = new Int();
-            ((Int*)var)->setValue(getIntRValue(currFunc, i));
+            getIntRValue(currFunc, i->children[ind]);
+            ((Int*)var)->setValue(getIntRValue(currFunc, i->children[ind]));
             break;
         case 2:
             var = new Double();
-            ((Double*)var)->setValue(getDoubleRValue(currFunc, i));
+            ((Double*)var)->setValue(getDoubleRValue(currFunc, i->children[ind]));
             break;
 
         case 3:
             var = new CityMap();
-            ((CityMap*)var)->setValue(getCityMapRValue(currFunc, i));
+            ((CityMap*)var)->setValue(getCityMapRValue(currFunc, i->children[ind]));
             break;
 
         case 4:
             var = new Street();
-            ((Street*)var)->setValue(getStreetRValue(currFunc, i));
+            ((Street*)var)->setValue(getStreetRValue(currFunc, i->children[ind]));
             break;
 
         case 5:
             var = new String();
-            ((String*)var)->setValue(getStringRValue(currFunc, i));
+            ((String*)var)->setValue(getStringRValue(currFunc, i->children[ind]));
             break;
         default:
             error("invalid type name");
             defined = false;
         }
         if (defined){
-            var->setType(i->children[0]->token.str);
-            var->setName(i->children[1]->token.str);
+            var->setType(((Function*)root->variables[fun_id])->getParametersTypes()[ind-1]);
+            var->setName(((Function*)root->variables[fun_id])->getParametersNames()[ind-1]);
             parameters.push_back(var);
         }
         else{
@@ -484,13 +496,15 @@ double Interpreter::getNumericRValue(TreeElement *currFunc, TreeElement* i){
                 return undefinde;
             }
             if(((Function*)root->variables[fun_id])->getReturnType() == "double"){
-                Double* returned = ((Double*)handleFunCal(currFunc, i, "double"));
+                Double* returned = ((Double*)handleFunCal(currFunc, i->children[0], "double"));
+                //Double* returned = ((Double*)handleFunCal(currFunc, i, "double"));
                 double toRet = returned->getValue();
                 delete returned;
                 return toRet;
             }
             if(((Function*)root->variables[fun_id])->getReturnType() == "int"){
-                Int* returned = ((Int*)handleFunCal(currFunc, i, "int"));
+                Int* returned = ((Int*)handleFunCal(currFunc, i->children[0], "int"));
+                //Int* returned = ((Int*)handleFunCal(currFunc, i, "int"));
                 double toRet = returned->getValue();
                 delete returned;
                 return toRet;
